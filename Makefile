@@ -5,4 +5,4 @@ sample:
 
 # Build the binary and put it in a bin dir
 build:
-	go build -o bin .
+	go build -o bin/ .
