@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"github.com/openmicrotools/jwt-inspect/lib"
+	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 
 func main() {
@@ -36,7 +36,7 @@ func jsonWrapper() js.Func {
 		}
 		inputJSON := args[0].String()
 		fmt.Printf("input %s\n", inputJSON)
-		content, err := lib.DecodeJwt(inputJSON)
+		content, err := jwt.DecodeJwt(inputJSON)
 		if err != nil {
 			errStr := fmt.Sprintf("unable to parse JSON. Error %s occurred\n", err)
 			result := map[string]any{

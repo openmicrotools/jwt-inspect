@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/openmicrotools/jwt-inspect/lib"
+	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 
 // sample taken directly from jwt.io
@@ -17,8 +17,8 @@ func main() {
 		panic("Incorrect number of args")
 	}
 
-	jwt := args[0]
+	jwtInput := args[0]
 
-	s, _ := lib.DecodeJwt(jwt)
+	s, _ := jwt.DecodeJwt(jwtInput)
 	fmt.Println(s)
 }
