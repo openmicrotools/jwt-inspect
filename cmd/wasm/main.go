@@ -49,4 +49,3 @@ func jsonWrapper() js.Func {
 	})
 	return jwtfunc
 }
-
