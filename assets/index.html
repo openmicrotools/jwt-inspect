@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="wasm_exec.js"></script>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("jwt.wasm"), go.importObject).then(
+        (result) => {
+          go.run(result.instance);
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <textarea
+      id="jwtinput"
+      name="jwtinput"
+      cols="80"
+      rows="20"
+      placeholder="Input JSON Web Token to decode"
+    ></textarea>
+    <input
+      id="button"
+      type="submit"
+      name="button"
+      value="Decode"
+      onclick="jwt(jwtinput.value)"
+    />
+    <textarea id="jwtoutput" name="jwtoutput" cols="80" rows="20"></textarea>
+  </body>
+  <script>
+    var jwt = function (input) {
+      var result = inspectJwt(input);
+      if (result != null && "error" in result) {
+        console.log("Go inspectJwt() return value", result);
+        jwtoutput.value = "";
+        alert(result.error);
+      }
+    };
+  </script>
+</html>
