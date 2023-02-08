@@ -8,12 +8,12 @@ import (
 )
 
 func main() {
-	js.Global().Set("inspectJwt", jsonWrapper())
+	js.Global().Set("inspectJwt", jwtWrapper())
 	<-make(chan bool)
 }
 
-func jsonWrapper() js.Func {
-	jwtfunc := js.FuncOf(func(this js.Value, args []js.Value) any {
+func jwtWrapper() js.Func {
+	jwtFunc := js.FuncOf(func(this js.Value, args []js.Value) any {
 		if len(args) != 1 {
 			result := map[string]any{
 				"error": "Invalid no of arguments passed",
@@ -34,11 +34,11 @@ func jsonWrapper() js.Func {
 			}
 			return result
 		}
-		inputJSON := args[0].String()
-		fmt.Printf("input %s\n", inputJSON)
-		content, err := jwt.DecodeJwt(inputJSON)
+		inputJwt := args[0].String()
+		content, err := jwt.DecodeJwt(inputJwt)
+
 		if err != nil {
-			errStr := fmt.Sprintf("unable to parse JSON. Error %s occurred\n", err)
+			errStr := fmt.Sprintf("unable to decode JWT. Error %s occurred\n", err)
 			result := map[string]any{
 				"error": errStr,
 			}
@@ -47,5 +47,5 @@ func jsonWrapper() js.Func {
 		jwtOutputTextArea.Set("value", content)
 		return nil
 	})
-	return jwtfunc
+	return jwtFunc
 }
