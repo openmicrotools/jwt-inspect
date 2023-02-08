@@ -12,5 +12,5 @@ wasm:
 	GOOS=js GOARCH=wasm go build -o ./assets/jwt.wasm ./cmd/wasm/.
 
 # run go server
-run:
+run: wasm
 	go run cmd/server/main.go
