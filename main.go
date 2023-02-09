@@ -19,6 +19,9 @@ func main() {
 
 	jwtInput := args[0]
 
-	s, _ := jwt.DecodeJwt(jwtInput)
-	fmt.Println(s)
+	decodedJwt, err := jwt.DecodeJwt(jwtInput)
+	if err != nil {
+		fmt.Printf("An error was encountered:\n%s\n", err.Error())
+	}
+	fmt.Println(decodedJwt.ToString())
 }
