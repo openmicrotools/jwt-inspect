@@ -38,7 +38,7 @@ func jwtWrapper() js.Func {
 		decoded, err := jwt.DecodeJwt(inputJwt)
 
 		if err != nil {
-			errStr := fmt.Sprintf("unable to decode JWT. Error %s occurred\n", err)
+			errStr := fmt.Sprintf("unable to decode JWT. Error \"%s\" occurred\n", err)
 			result := map[string]any{
 				"error": errStr,
 			}
