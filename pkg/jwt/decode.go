@@ -57,7 +57,7 @@ func decodeJwtSection(s string) (*jsonData, error) {
 }
 
 // DecodeJwt accepts a string and returns our Jwt type and and error.
-// This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT sting is malformed.
+// This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT string is malformed.
 func DecodeJwt(s string) (Jwt, error) {
 
 	var jwt Jwt
