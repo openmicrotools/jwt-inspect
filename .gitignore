@@ -1,1 +1,7 @@
 bin/**
+assets/*.wasm
+
+# Visual Studio Code files
+*.code-workspace
+.vscode/*
+**/.vscode/*
