@@ -14,7 +14,7 @@ sample-all: sample sample-nonurl
 
 # a better testing framework needs to be divised however adding this make rule for easy testing of the package which has unit testing
 test:
-	go test ./pkg/jwt/...
+	go test -v ./pkg/jwt/...
 
 # Build the binary and put it in a bin dir
 build:
