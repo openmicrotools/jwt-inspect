@@ -10,7 +10,7 @@ sample-nonurl:
 	go run . eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lPz8/IiwiaWF0IjoxNTE2MjM5MDIyfQ.K6s7vE/2ZRUY6JQ7CbeGMn77U02AhqDd+wnK/wQ1Q9c
 
 .PHONY: sample-all
-sampe-all: sample sample-nonurl
+sample-all: sample sample-nonurl
 
 # a better testing framework needs to be divised however adding this make rule for easy testing of the package which has unit testing
 test:

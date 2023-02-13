@@ -8,12 +8,13 @@ import (
 	"time"
 )
 
+// Jwt is a struct that holds our simplified type and contains json tags so it can be marshalled to JSON
 type Jwt struct {
 	Header  *jsonData `json:"header,omitempty"`
 	Payload *jsonData `json:"payload,omitempty"`
 }
 
-// Convert a JWT to a string or give "" on marhal failure
+// ToString converts our Jwt type to a string or returns "" on MarshalIndent failure
 func (j Jwt) ToString() string {
 	b, err := json.MarshalIndent(j, "", "  ")
 	if err != nil {
@@ -24,7 +25,7 @@ func (j Jwt) ToString() string {
 
 type jsonData map[string]interface{}
 
-// Handle decoding a base64url encodeded section of a JWT
+// Handle decoding a base64url encoded section of a JWT
 func decodeJwtSection(s string) (*jsonData, error) {
 
 	section := make(jsonData)
@@ -55,23 +56,8 @@ func decodeJwtSection(s string) (*jsonData, error) {
 
 }
 
-func appendError(e1, e2 error) error {
-	if e1 == nil {
-		return e2
-	}
-	if e2 == nil {
-		return e1
-	}
-	return fmt.Errorf("%s; %s", e1.Error(), e2.Error())
-}
-
-func prefixError(e error, p string) error {
-	if e != nil {
-		return fmt.Errorf("%s %s", p, e.Error())
-	}
-	return e
-}
-
+// DecodeJwt accepts a string and returns our Jwt type and and error.
+// This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT sting is malformed.
 func DecodeJwt(s string) (Jwt, error) {
 
 	var jwt Jwt

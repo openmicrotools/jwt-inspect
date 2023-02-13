@@ -28,6 +28,12 @@ func TestDecode(t *testing.T) {
 			ExpectErrVal: "payload section is not base64url encoded",
 		},
 		{
+			InputVal:     `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImJlZXAiOiJib29wYm9wPz8/In0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.3FMRR0q2EpYL7JAuaYFxFz9mtjNoveYU8HtievNWsXw`,
+			ExpectVal:    `{"payload":{"iat":"Wed, 17 Jan 2018 20:30:22 EST","name":"John Doe","sub":"1234567890"}}`,
+			ExpectErr:    true,
+			ExpectErrVal: "header section is not base64url encoded",
+		},
+		{
 			InputVal:     `jwt`, // wildly invalid input
 			ExpectVal:    `{}`,
 			ExpectErr:    true,
