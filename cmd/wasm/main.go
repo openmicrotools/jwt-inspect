@@ -35,16 +35,16 @@ func jwtWrapper() js.Func {
 			return result
 		}
 		inputJwt := args[0].String()
-		content, err := jwt.DecodeJwt(inputJwt)
+		decoded, err := jwt.DecodeJwt(inputJwt)
 
 		if err != nil {
-			errStr := fmt.Sprintf("unable to decode JWT. Error %s occurred\n", err)
+			errStr := fmt.Sprintf("unable to decode JWT. Error \"%s\" occurred\n", err)
 			result := map[string]any{
 				"error": errStr,
 			}
 			return result
 		}
-		jwtOutputTextArea.Set("value", content)
+		jwtOutputTextArea.Set("value", decoded.ToString())
 		return nil
 	})
 	return jwtFunc
