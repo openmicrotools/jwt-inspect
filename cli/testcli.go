@@ -21,9 +21,11 @@ func main() {
 		testcli <jwt> --example=<setting for example flag> --<flag 2>=<setting for flag2
 		For safest usage, use = . `jwt-inspect <jwt> --epoch false` is not equal to `jwt-inspect <jwt> --epoch=false`
 	*/
-
 	decodeEpochPtr := decodeCommand.Bool("epoch", false, "Prints the time stamps of the token using epoch format. (Optional)")
-	decodeEpochPtrShort := decodeCommand.Bool("e", false, "Prints the time stamps of the token using epoch format. (Optional)")
+	// BoolVar takes in a pointer to store the value to
+	// we give it the previous prt for the long flag so as to only need to check one location
+	// if multiple flags are passed, the last passed flag will be the value referenced by this var.
+	decodeCommand.BoolVar(decodeEpochPtr, "e", false, "Prints the time stamps of the token using epoch format. (Optional)")
 	if len(os.Args) < 1 {
 		fmt.Println("Usage is 'testcli <jwt> <flags>")
 		os.Exit(1)
@@ -52,7 +54,7 @@ func main() {
 	if decodeCommand.Parsed() {
 		//Choice flag
 
-		if *decodeEpochPtr || *decodeEpochPtrShort {
+		if *decodeEpochPtr {
 			fmt.Println("we should provide epoch format")
 		} else {
 			fmt.Println("we should not provide epoch format")
@@ -60,9 +62,8 @@ func main() {
 
 		// printBool := (*decodeEpochPtr || *decodeEpochPtrShort)
 		// Print
-		fmt.Printf("decodeEpochPtr: %s, decodeEpochPtrShort: %s, Print JWT decoded\n",
+		fmt.Printf("decodeEpochPtr: %s,  Print JWT decoded\n",
 			fmt.Sprint(*decodeEpochPtr),
-			fmt.Sprint(*decodeEpochPtrShort),
 		)
 	}
 }
