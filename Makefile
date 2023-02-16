@@ -1,4 +1,3 @@
-
 # Run a real basic sample based on an example token from jwt.io
 .PHONY: sample
 sample:
@@ -12,16 +11,33 @@ sample-nonurl:
 .PHONY: sample-all
 sample-all: sample sample-nonurl
 
-# a better testing framework needs to be divised however adding this make rule for easy testing of the package which has unit testing
+# run unit tests exclude wasm folder
+.PHONY: test
 test:
-	go test -v ./pkg/jwt/...
+	go test -v $(shell go list ./... | grep -v /cmd/wasm) -coverprofile=coverage.out
+
+.PHONY: test-coverage
+test-coverage:test
+	go tool cover -html=coverage.out
+
+# run go fmt
+.PHONY: fmt
+fmt:
+	go fmt ./...
+
+# run go vet exclude wasm folder
+.PHONY: vet
+vet: 
+	go vet $(shell go list ./... | grep -v /cmd/wasm)
 
 # Build the binary and put it in a bin dir
-build:
+.PHONY: build
+build: fmt vet test
 	go build -o bin/ .
 
 # compile go code to wasm binary
-wasm:
+.PHONY: wasm
+wasm: fmt vet test
 	GOOS=js GOARCH=wasm go build -o ./assets/jwt.wasm ./cmd/wasm/.
 
 # run go server
