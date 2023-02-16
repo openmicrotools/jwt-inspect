@@ -19,7 +19,7 @@ jobs:
       - name: Unit Tests
         run: go test -v $(go list ./... | grep -v /cmd/wasm) -coverprofile=coverage.out
 
-      - name: Check Test coverage
+      - name: Check Test Coverage
         env:
           TEST_COVERAGE_THRESHOLD: 80
         run: |
@@ -35,5 +35,8 @@ jobs:
             exit 1
           fi
 
-      - name: Build
+      - name: Build CLI
         run: go build -v $(go list ./... | grep -v /cmd/wasm)
+
+      - name: Build Wasm
+        run: GOOS=js GOARCH=wasm go build -o ./assets/jwt.wasm ./cmd/wasm/.

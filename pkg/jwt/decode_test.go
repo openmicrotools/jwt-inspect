@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-type DecodeTestCases struct {
+type DecodeTestCase struct {
 	Name         string
 	InputVal     string
 	EnvTimeZone  string
@@ -18,7 +18,7 @@ type DecodeTestCases struct {
 
 func TestDecodeJwt(t *testing.T) {
 
-	testCases := []DecodeTestCases{
+	testCases := []DecodeTestCase{
 		{
 			Name:        "When input is valid token expecting return header and payload in json format",
 			InputVal:    `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`,
@@ -86,13 +86,15 @@ func TestDecodeJwt(t *testing.T) {
 			//setting timezone so test results won't be different between different local timezone
 			os.Setenv("TZ", test.EnvTimeZone)
 
+			defer os.Unsetenv("TZ")
+
 			decoded, err := DecodeJwt(test.InputVal)
 			if test.ExpectErr {
 				if err == nil {
-					fmt.Println("Test expected error but received none")
+					t.Logf("Test expected error but received none")
 					t.Fail()
 				} else if err.Error() != test.ExpectErrVal {
-					fmt.Printf("Test failed. Expected Error:\n%s\nGot:\n%s\n", test.ExpectErrVal, err.Error())
+					t.Logf("Test failed. Expected Error:\n%s\nGot:\n%s\n", test.ExpectErrVal, err.Error())
 					t.Fail()
 				}
 			} else {
