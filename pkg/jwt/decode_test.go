@@ -83,10 +83,18 @@ func TestDecodeJwt(t *testing.T) {
 
 	for _, test := range testCases {
 		t.Run(test.Name, func(t *testing.T) {
+			originalEnvTZ := os.Getenv("TZ")
+
 			//setting timezone so test results won't be different between different local timezone
 			os.Setenv("TZ", test.EnvTimeZone)
 
-			defer os.Unsetenv("TZ")
+			defer func() {
+				if originalEnvTZ != "" {
+					os.Setenv("TZ", originalEnvTZ)
+				} else {
+					os.Unsetenv("TZ")
+				}
+			}()
 
 			decoded, err := DecodeJwt(test.InputVal)
 			if test.ExpectErr {
