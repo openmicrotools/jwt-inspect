@@ -10,7 +10,8 @@ func main() {
 	// "" is the default, where no command (such as decode) is included
 	// if this line was 'decodeCommand := flag.NewFlagSet("decode", flag.PanicOnError)', you would need to run
 	// 'testcli decode' to access the functionality and flags for that command
-	decodeCommand := flag.NewFlagSet("", flag.PanicOnError)
+	// exit on error does not show panic message
+	decodeCommand := flag.NewFlagSet("", flag.ExitOnError)
 
 	// Count subcommand flag pointers
 	// Adding a new choice for --epoch
@@ -26,6 +27,8 @@ func main() {
 	// we give it the previous prt for the long flag so as to only need to check one location
 	// if multiple flags are passed, the last passed flag will be the value referenced by this var.
 	decodeCommand.BoolVar(decodeEpochPtr, "e", false, "Prints the time stamps of the token using epoch format. (Optional)")
+
+	// figure out how to handle without ugly panic
 	if len(os.Args) < 1 {
 		fmt.Println("Usage is 'testcli <jwt> <flags>")
 		os.Exit(1)
@@ -35,6 +38,11 @@ func main() {
 	// Parse the flags for appropriate FlagSet
 	// FlagSet.Parse() requires a set of arguments to parse as input
 	// os.Args[2:] will be all arguments starting after the subcommand at os.Args[1]
+
+	// remove switch statement, just use -h -help
+	// jam command to cut and paste with full token in help
+
+	// if nothing in passed in (ie: just "testcli"), we should direct people to go to help, or show help
 	switch os.Args[1] {
 	// command help provided
 	case "help":
