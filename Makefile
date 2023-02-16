@@ -16,9 +16,15 @@ sample-all: sample sample-nonurl
 test:
 	go test -v $(shell go list ./... | grep -v /cmd/wasm) -coverprofile=coverage.out
 
-.PHONY: test-coverage
-test-coverage:test
+# create test coverage func report
+.PHONY: test-coverage-html
+test-coverage-html:test
 	go tool cover -html=coverage.out
+
+# create test coverage html report
+.PHONY: test-coverage-func
+test-coverage-func:test
+	go tool cover -func coverage.out
 
 # run go fmt
 .PHONY: fmt
