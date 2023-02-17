@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
+	"github.com/openmicrotools/jwt-inspect/pkg/stdin"
 )
 
 // sample taken directly from jwt.io
@@ -13,11 +14,15 @@ import (
 func main() {
 
 	args := os.Args[1:] // Args[0] is the name of the binary/program so we'll ignore it
-	if len(args) != 1 {
-		panic("Incorrect number of args")
-	}
 
-	jwtInput := args[0]
+	jwtInput := stdin.Read()
+
+	if jwtInput == "" {
+		if len(args) != 1 {
+			panic("Incorrect number of args")
+		}
+		jwtInput = args[0]
+	}
 
 	decodedJwt, err := jwt.DecodeJwt(jwtInput)
 	if err != nil {
