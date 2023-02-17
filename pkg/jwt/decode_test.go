@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"testing"
 )
@@ -114,7 +113,7 @@ func TestDecodeJwt(t *testing.T) {
 			if err != nil {
 				t.Fail()
 			} else if string(actual) != test.ExpectVal {
-				fmt.Printf("Test failed. Expected:\n%s\nGot:\n%s\n", test.ExpectVal, string(actual))
+				t.Logf("Test failed. Expected:\n%s\nGot:\n%s\n", test.ExpectVal, string(actual))
 				t.Fail()
 			}
 		},
