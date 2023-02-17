@@ -1,6 +1,9 @@
 bin/**
 assets/*.wasm
 
+# go test coverage file
+*.out
+
 # Visual Studio Code files
 *.code-workspace
 .vscode/*
