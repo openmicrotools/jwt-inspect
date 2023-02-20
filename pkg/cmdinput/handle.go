@@ -39,12 +39,9 @@ func handleInput(args []string) (string, bool) {
 	printEpoch := registerBool(defaultCmd, "epoch", false, "Output any numeric date fields in the token using epoch format instead of as a formatted human readable string. (Optional)")
 	printHelp := registerBool(defaultCmd, "help", false, "Print the usage information for jwt-inspect. (Optional)")
 
+	var inputErr error  // capture and store the inputErr value for later use within the outer scope
 	if jwtInput == "" { // if we didn't get anything on stdin let's look for an argument with a JWT
-		var err error
-		args, jwtInput, err = jwt.FindAndRemoveJwt(args) // try to peel off a JWT from our list of args to make flag parsing more smooth; without this flag parsing will get tripped up on the first non-flag argument and quit instead of parsing flags which may come after the jwt
-		if err != nil {
-			exitUsage(errJwtNotFound, defaultCmd, err.Error())
-		}
+		args, jwtInput, inputErr = jwt.FindAndRemoveJwt(args) // try to peel off a JWT from our list of args to make flag parsing more smooth; without this flag parsing will get tripped up on the first non-flag argument and quit instead of parsing flags which may come after the jwt
 	}
 
 	err := defaultCmd.Parse(args) // parse cli flags
@@ -58,6 +55,10 @@ func handleInput(args []string) (string, bool) {
 
 	if *printHelp { // if we're being asked to print help lets exit with usage but not with an error
 		exitUsage(0, defaultCmd)
+	}
+
+	if inputErr != nil { // we check for input errors after parsing and running through possible help scenario to avoid errors when only the -h flag is provided
+		exitUsage(errJwtNotFound, defaultCmd, inputErr.Error())
 	}
 
 	return jwtInput, *printEpoch // looks successful so far, just return our jwt and options

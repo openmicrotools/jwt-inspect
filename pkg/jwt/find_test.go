@@ -39,13 +39,13 @@ func TestFindAndRemoveJwt(t *testing.T) {
 			Name:      "When only flags are present expect an error",
 			Input:     []string{"-e", "--help"},
 			ExpectErr: true,
-			ErrVal:    "No valid JWT found",
+			ErrVal:    "no valid JWT found",
 		},
 		{
 			Name:      "When empty slice is provided expect an error",
 			Input:     []string{},
 			ExpectErr: true,
-			ErrVal:    "No valid JWT found",
+			ErrVal:    "no valid JWT found",
 		},
 		{
 			Name:        "When an improperly formatted JWT is present match it anyway and remove it",
@@ -65,15 +65,17 @@ func TestFindAndRemoveJwt(t *testing.T) {
 			Name:        "When multiple JWT are present match the last one and remove them all",
 			Input:       []string{testJwt, testBadJwt, testJwt},
 			ExpectSlice: []string{},
-			ExpectMatch: testJwt,
-			ExpectErr:   false,
+			ExpectMatch: "",
+			ExpectErr:   true,
+			ErrVal:      "found multiple JWT arguments, please supply only one JWT",
 		},
 		{
 			Name:        "When multiple JWT and flags are present match the last one and remove them all leaving the args",
 			Input:       []string{testJwt, "-e", "--help", testBadJwt, testJwt},
-			ExpectSlice: []string{"-e", "--help"},
-			ExpectMatch: testJwt,
-			ExpectErr:   false,
+			ExpectSlice: []string{},
+			ExpectMatch: "",
+			ExpectErr:   true,
+			ErrVal:      "found multiple JWT arguments, please supply only one JWT",
 		},
 	}
 
