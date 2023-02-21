@@ -106,3 +106,38 @@ func TestReadFrom(t *testing.T) {
 		})
 	}
 }
+
+func TestRead(t *testing.T) { // simple test to make sure read is actually using os.Stdin
+
+	r, w, e := os.Pipe()
+	if e != nil {
+		t.Logf("unable to setup test pipe, received error: %s", e.Error())
+		t.FailNow()
+	}
+
+	testVal := "beep boop"
+	_, e = w.WriteString(testVal)
+	if e != nil {
+		t.Logf("unable to write on test pipe, received error: %s", e.Error())
+		t.FailNow()
+	}
+
+	e = w.Close()
+	if e != nil {
+		t.Logf("unable to close test pipe, received error: %s", e.Error())
+		t.FailNow()
+	}
+
+	// ensure Stdin isn't permanently mangled
+	save := os.Stdin
+	defer func() { os.Stdin = save }()
+	os.Stdin = r // temporarily mangle stdin with our own pipe for testing
+
+	actual := Read()
+
+	if actual != testVal {
+		t.Logf("read value doesn't appear to be from os.Stdin!")
+		t.FailNow()
+	}
+
+}

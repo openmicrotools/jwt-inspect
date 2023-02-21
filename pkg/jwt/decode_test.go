@@ -95,7 +95,7 @@ func TestDecodeJwt(t *testing.T) {
 				}
 			}()
 
-			decoded, err := DecodeJwt(test.InputVal)
+			decoded, err := DecodeJwt(test.InputVal, false) // TODO: Hard coded pretty print on for now
 			if test.ExpectErr {
 				if err == nil {
 					t.Logf("Test expected error but received none")

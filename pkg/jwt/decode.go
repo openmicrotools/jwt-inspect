@@ -26,7 +26,7 @@ func (j Jwt) ToString() string {
 type jsonData map[string]interface{}
 
 // Handle decoding a base64url encoded section of a JWT
-func decodeJwtSection(s string) (*jsonData, error) {
+func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 
 	section := make(jsonData)
 
@@ -41,15 +41,16 @@ func decodeJwtSection(s string) (*jsonData, error) {
 	if err != nil {
 		return nil, fmt.Errorf("section is not valid JSON")
 	}
+	if !printEpoch { // if we are printing epoch we can skip this block, otherwise process as usual
+		for k, v := range section {
 
-	for k, v := range section {
+			// TODO: this only works at the top level, technically a JWT could contain a nested JWT so consider handling that
+			numericDate, ok := v.(float64)
+			if ok { // NumericDate is the format for timestamps, golang reads it as a float64 so we can detect timestamps and format them better
+				(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
+			}
 
-		// TODO: this only works at the top level, technically a JWT could contain a nested JWT so consider handling that
-		numericDate, ok := v.(float64)
-		if ok { // NumericDate is the format for timestamps, golang reads it as a float64 so we can detect timestamps and format them better
-			(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
 		}
-
 	}
 
 	return &section, nil
@@ -58,7 +59,7 @@ func decodeJwtSection(s string) (*jsonData, error) {
 
 // DecodeJwt accepts a string and returns our Jwt type and and error.
 // This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT string is malformed.
-func DecodeJwt(s string) (Jwt, error) {
+func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
 
 	var jwt Jwt
 	// header, payload, sig
@@ -72,7 +73,7 @@ func DecodeJwt(s string) (Jwt, error) {
 
 	for i, elem := range hps[:2] { // just ignore the sig for now
 
-		unmarshalledData, err := decodeJwtSection(elem)
+		unmarshalledData, err := decodeJwtSection(elem, printEpoch)
 
 		switch i {
 		case 0:
