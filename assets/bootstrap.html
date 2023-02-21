@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- bootstrap start-->
+    <link
+      href="vendors/bootstrap-5.2.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="vendors/bootstrap-5.2.3/js/bootstrap.min.js"></script>
+    <!-- web assembly js code start -->
+    <script src="go/wasm_exec.js"></script>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("jwt.wasm"), go.importObject).then(
+        (result) => {
+          go.run(result.instance);
+        }
+      );
+    </script>
+    <!-- web assembly js code end -->
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <header class="p-3 bg-dark text-white">
+          <div class="container">
+            <div
+              class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+            >
+              <a
+                href="/"
+                class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+              >
+                <span class="fs-4">JWT Inspect</span>
+              </a>
+
+              <ul class="nav nav-pills ms-auto">
+                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+      </div>
+      <div class="container">
+        <div class="p-5 container-xxl text-center">
+          <div class="row">
+            <div class="col me-2">
+              <div class="mb-5">
+                <span class="float-start h3" for="jwtinput"> Encoded </span>
+                <small
+                  class="form-check mt-3"
+                  style="float: right; position: relative"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="epochCheck"
+                  />
+                  <label
+                    class="form-check-label fw-light fs-10"
+                    for="epochCheck"
+                  >
+                    Epoch Format
+                  </label>
+                </small>
+              </div>
+              <div class="form-group">
+                <textarea
+                  id="jwtinput"
+                  name="jwtinput"
+                  class="form-control rounded-0"
+                  rows="20"
+                  oninput="jwt(jwtinput.value)"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col ms-2">
+              <div class="mb-5">
+                <span class="float-start h3" for="jwtout">Decoded</span>
+              </div>
+              <textarea
+                id="jwtoutput"
+                name="jwtoutput"
+                class="form-control rounded-0"
+                rows="20"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <footer class="py-3 my-4">
+          <p class="text-center text-muted">© Openmicro Tools 2023</p>
+        </footer>
+      </div>
+    </main>
+  </body>
+  <script>
+    var jwt = function (input) {
+      var result = inspectJwt(input);
+      if (result != null && "error" in result) {
+        console.log("Go inspectJwt() return value", result);
+        jwtoutput.value = result.error;
+      }
+    };
+  </script>
+</html>
