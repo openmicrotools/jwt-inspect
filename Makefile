@@ -1,3 +1,5 @@
+IMAGE_TAG ?= test
+
 # Run a real basic sample based on an example token from jwt.io
 .PHONY: sample
 sample:
@@ -52,3 +54,7 @@ run: wasm
 	# please browse to http://localhost:8080 to view the served page
 	#
 	go run cmd/server/main.go
+
+.PHONY: docker-build
+docker-build:
+	docker build -f ./docker/Dockerfile . --tag jwt-server:$(IMAGE_TAG)
