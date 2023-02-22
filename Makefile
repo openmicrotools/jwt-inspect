@@ -1,4 +1,4 @@
-IMAGE_TAG ?= test
+IMAGE_TAG ?= alpha
 
 # Run a real basic sample based on an example token from jwt.io
 .PHONY: sample
