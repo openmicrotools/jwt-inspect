@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine AS builder
+FROM cgr.dev/chainguard/go:latest AS builder
 
 WORKDIR /src
 
@@ -10,7 +10,8 @@ COPY . .
 
 RUN hack/build.sh
 
-FROM gcr.io/distroless/static-debian11:nonroot
+# FROM gcr.io/distroless/static-debian11:nonroot
+FROM cgr.dev/chainguard/static:latest
 
 WORKDIR /
 
