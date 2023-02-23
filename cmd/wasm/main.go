@@ -53,12 +53,12 @@ func jwtWrapper() js.Func {
 
 		//set decoded header and payload text area
 		if decoded.Header != nil {
-			jwtOutputHeaderTextArea.Set("value", decoded.Header.ToString())
+			jwtOutputHeaderTextArea.Set("value", jwt.ToString(decoded.Header))
 		} else {
 			jwtOutputHeaderTextArea.Set("value", nil)
 		}
 		if decoded.Payload != nil {
-			jwtOutputPayloadTextArea.Set("value", decoded.Payload.ToString())
+			jwtOutputPayloadTextArea.Set("value", jwt.ToString(decoded.Payload))
 		} else {
 			jwtOutputPayloadTextArea.Set("value", nil)
 		}

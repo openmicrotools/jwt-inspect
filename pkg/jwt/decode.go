@@ -14,16 +14,13 @@ type Jwt struct {
 	Payload *jsonData `json:"payload,omitempty"`
 }
 
-// ToString converts our Jwt type to a string or returns "" on MarshalIndent failure
-func (j Jwt) ToString() string {
-	b, err := json.MarshalIndent(j, "", "  ")
-	if err != nil {
-		return ""
-	}
-	return string(b)
+// Wrapper declares a type constraints for ToString func
+type Wrapper interface {
+	Jwt | *jsonData
 }
 
-func (j jsonData) ToString() string {
+// ToString converts Jwt type and jsonData type to a string or returns "" on MarshalIndent failure
+func ToString[V Jwt | *jsonData](j V) string {
 	b, err := json.MarshalIndent(j, "", "  ")
 	if err != nil {
 		return ""
