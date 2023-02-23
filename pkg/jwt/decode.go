@@ -15,12 +15,12 @@ type Jwt struct {
 }
 
 // Wrapper declares a type constraints for ToString func
-type Wrapper interface {
+type Stringable interface {
 	Jwt | *jsonData
 }
 
 // ToString converts Jwt type and jsonData type to a string or returns "" on MarshalIndent failure
-func ToString[V Jwt | *jsonData](j V) string {
+func ToString[T Stringable](j T) string {
 	b, err := json.MarshalIndent(j, "", "  ")
 	if err != nil {
 		return ""
