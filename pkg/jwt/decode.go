@@ -23,6 +23,14 @@ func (j Jwt) ToString() string {
 	return string(b)
 }
 
+func (j jsonData) ToString() string {
+	b, err := json.MarshalIndent(j, "", "  ")
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
 type jsonData map[string]interface{}
 
 // Handle decoding a base64url encoded section of a JWT

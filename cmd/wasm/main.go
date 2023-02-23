@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"syscall/js"
+	"time"
 
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
@@ -14,37 +14,54 @@ func main() {
 
 func jwtWrapper() js.Func {
 	jwtFunc := js.FuncOf(func(this js.Value, args []js.Value) any {
-		if len(args) != 1 {
-			result := map[string]any{
-				"error": "Invalid no of arguments passed",
-			}
-			return result
-		}
 		jsDoc := js.Global().Get("document")
-		if !jsDoc.Truthy() {
-			result := map[string]any{
-				"error": "Unable to get document object",
-			}
-			return result
+
+		//get radiocheck value
+		radioCheck := jsDoc.Call("querySelector", "input[name=radiocheck]:checked").Get("value").String()
+
+		//set printEpoch bool value based on radiocheck value
+		var printEpoch bool
+		if radioCheck == "0" {
+			printEpoch = false
+		} else {
+			printEpoch = true
 		}
-		jwtOutputTextArea := jsDoc.Call("getElementById", "jwtoutput")
-		if !jwtOutputTextArea.Truthy() {
-			result := map[string]any{
-				"error": "Unable to get output text area",
-			}
-			return result
-		}
+
 		inputJwt := args[0].String()
-		decoded, err := jwt.DecodeJwt(inputJwt, false) // TODO: hardcoded pretty print on for now
+		decoded, err := jwt.DecodeJwt(inputJwt, printEpoch)
+
+		//get decoded Header textarea
+		jwtOutputHeaderTextArea := jsDoc.Call("getElementById", "jwtoutputheader")
+
+		//get decoded Payload textarea
+		jwtOutputPayloadTextArea := jsDoc.Call("getElementById", "jwtoutputpayload")
 
 		if err != nil {
-			errStr := fmt.Sprintf("unable to decode JWT. Error \"%s\" occurred\n", err)
-			result := map[string]any{
-				"error": errStr,
-			}
-			return result
+			//get alert p element and set error message in the element
+			jwtAlertMessage := jsDoc.Call("getElementById", "jwterrormessage")
+			jwtAlertMessage.Set("innerHTML", err.Error())
+
+			//get alert div element and show
+			jwtAlert := jsDoc.Call("getElementById", "jwtalert")
+			jwtAlert.Get("style").Call("setProperty", "display", "block")
+
+			//hide alert div element after 3 seconds
+			time.AfterFunc(3*time.Second, func() {
+				jwtAlert.Get("style").Call("setProperty", "display", "none")
+			})
 		}
-		jwtOutputTextArea.Set("value", decoded.ToString())
+
+		//set decoded header and payload text area
+		if decoded.Header != nil {
+			jwtOutputHeaderTextArea.Set("value", decoded.Header.ToString())
+		} else {
+			jwtOutputHeaderTextArea.Set("value", nil)
+		}
+		if decoded.Payload != nil {
+			jwtOutputPayloadTextArea.Set("value", decoded.Payload.ToString())
+		} else {
+			jwtOutputPayloadTextArea.Set("value", nil)
+		}
 		return nil
 	})
 	return jwtFunc
