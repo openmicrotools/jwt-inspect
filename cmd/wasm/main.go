@@ -7,6 +7,12 @@ import (
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 
+var jsDoc js.Value
+
+func init() {
+	jsDoc = js.Global().Get("document")
+}
+
 func main() {
 	js.Global().Set("inspectJwt", jwtWrapper())
 	<-make(chan bool)
@@ -14,14 +20,13 @@ func main() {
 
 func jwtWrapper() js.Func {
 	jwtFunc := js.FuncOf(func(this js.Value, args []js.Value) any {
-		jsDoc := js.Global().Get("document")
-
 		//get radiocheck value
-		radioCheck := jsDoc.Call("querySelector", "input[name=radiocheck]:checked").Get("value").String()
+		radioCheckElement := getElementByQuerySelector("input[name=radiocheck]:checked")
+		radioCheckValue := radioCheckElement.Get("value").String()
 
 		//set printEpoch bool value based on radiocheck value
 		var printEpoch bool
-		if radioCheck == "0" {
+		if radioCheckValue == "0" {
 			printEpoch = false
 		} else {
 			printEpoch = true
@@ -31,18 +36,18 @@ func jwtWrapper() js.Func {
 		decoded, err := jwt.DecodeJwt(inputJwt, printEpoch)
 
 		//get decoded Header textarea
-		jwtOutputHeaderTextArea := jsDoc.Call("getElementById", "jwtoutputheader")
+		jwtOutputHeaderTextArea := getElementById("jwtoutputheader")
 
 		//get decoded Payload textarea
-		jwtOutputPayloadTextArea := jsDoc.Call("getElementById", "jwtoutputpayload")
+		jwtOutputPayloadTextArea := getElementById("jwtoutputpayload")
 
 		if err != nil {
 			//get alert p element and set error message in the element
-			jwtAlertMessage := jsDoc.Call("getElementById", "jwterrormessage")
+			jwtAlertMessage := getElementById("jwterrormessage")
 			jwtAlertMessage.Set("innerHTML", err.Error())
 
 			//get alert div element and show
-			jwtAlert := jsDoc.Call("getElementById", "jwtalert")
+			jwtAlert := getElementById("jwtalert")
 			jwtAlert.Get("style").Call("setProperty", "display", "block")
 
 			//hide alert div element after 3 seconds
@@ -51,7 +56,7 @@ func jwtWrapper() js.Func {
 			})
 		}
 
-		//set decoded header and payload text area
+		//set decoded header and payload text area if is not nil
 		if decoded.Header != nil {
 			jwtOutputHeaderTextArea.Set("value", jwt.ToString(decoded.Header))
 		} else {
@@ -65,4 +70,26 @@ func jwtWrapper() js.Func {
 		return nil
 	})
 	return jwtFunc
+}
+
+// getElementById gets the dom element by id
+// if there is no such element, exit immediately
+func getElementById(elementId string) js.Value {
+	var element = jsDoc.Call("getElementById", elementId)
+	if !element.Truthy() {
+		//panic will print the message in console.log useful for debugging/testing
+		panic("failed to getElementById: " + elementId)
+	}
+	return element
+}
+
+// getElementByQuerySelector gets the dom element using querySelector
+// if there is no such element, exit immediately
+func getElementByQuerySelector(query string) js.Value {
+	var element = jsDoc.Call("querySelector", query)
+	if !element.Truthy() {
+		//panic will print the message in console.log useful for debugging/testing
+		panic("failed to get element using querySelector: " + query)
+	}
+	return element
 }
