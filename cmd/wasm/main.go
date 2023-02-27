@@ -4,6 +4,7 @@ import (
 	"syscall/js"
 
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
+	"github.com/openmicrotools/jwt-inspect/pkg/util"
 )
 
 var jsDoc js.Value
@@ -46,7 +47,7 @@ func jwtWrapper() js.Func {
 		if err != nil {
 			//get alert p element and set error message in the element
 			jwtAlertMessage := getElementById("jwterrormessage")
-			jwtAlertMessage.Set("innerHTML", err.Error())
+			jwtAlertMessage.Set("innerHTML", util.CapitalizeFirstChar(err.Error()))
 
 			//show alert div element
 			jwtAlert.Get("style").Call("setProperty", "display", "block")
