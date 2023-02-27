@@ -2,7 +2,6 @@ package main
 
 import (
 	"syscall/js"
-	"time"
 
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
@@ -41,19 +40,19 @@ func jwtWrapper() js.Func {
 		//get decoded Payload textarea
 		jwtOutputPayloadTextArea := getElementById("jwtoutputpayload")
 
+		//get alert div element
+		jwtAlert := getElementById("jwtalert")
+
 		if err != nil {
 			//get alert p element and set error message in the element
 			jwtAlertMessage := getElementById("jwterrormessage")
 			jwtAlertMessage.Set("innerHTML", err.Error())
 
-			//get alert div element and show
-			jwtAlert := getElementById("jwtalert")
+			//show alert div element
 			jwtAlert.Get("style").Call("setProperty", "display", "block")
-
-			//hide alert div element after 3 seconds
-			time.AfterFunc(3*time.Second, func() {
-				jwtAlert.Get("style").Call("setProperty", "display", "none")
-			})
+		} else {
+			//if there is no error hide alert div element
+			jwtAlert.Get("style").Call("setProperty", "display", "none")
 		}
 
 		//set decoded header and payload text area if is not nil

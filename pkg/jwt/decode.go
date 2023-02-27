@@ -67,6 +67,11 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
 
 	var jwt Jwt
+
+	if s == "" {
+		return jwt, fmt.Errorf("supplied string is empty")
+	}
+
 	// header, payload, sig
 	hps := strings.Split(s, ".")
 	if len(hps) != 3 {
