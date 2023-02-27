@@ -8,7 +8,7 @@
       href="vendors/bootstrap-5.2.3/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="vendors/bootstrap-5.2.3/js/bootstrap.min.js"></script>
+    <script src="vendors/bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
     <!-- bootstrap end -->
     <!-- web assembly js code start -->
     <script src="go/wasm_exec.js"></script>
@@ -97,7 +97,12 @@
                       checked
                       onclick="inspectJwt(jwtinput.value)"
                     />
-                    <label class="btn btn-outline-primary" for="btnradio1"
+                    <label
+                      class="btn btn-outline-primary"
+                      for="btnradio1"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="left"
+                      data-bs-title="Human readable format of JWT date/times"
                       >Date & Time</label
                     >
 
@@ -110,7 +115,12 @@
                       autocomplete="off"
                       onclick="inspectJwt(jwtinput.value)"
                     />
-                    <label class="btn btn-outline-primary" for="btnradio2"
+                    <label
+                      class="btn btn-outline-primary"
+                      for="btnradio2"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Original JWT value which is expressed in epoch format"
                       >NumericDate
                     </label>
                   </div>
@@ -144,4 +154,13 @@
       </div>
     </main>
   </body>
+  <script>
+    //bootstrap 5.2 enable tooltips https://getbootstrap.com/docs/5.2/components/tooltips/
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    );
+    const tooltipList = [...tooltipTriggerList].map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+  </script>
 </html>
