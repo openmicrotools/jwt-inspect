@@ -4,14 +4,8 @@ import (
 	"syscall/js"
 
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
-	"github.com/openmicrotools/jwt-inspect/pkg/util"
+	"github.com/openmicrotools/jwt-inspect/pkg/text"
 )
-
-var jsDoc js.Value
-
-func init() {
-	jsDoc = js.Global().Get("document")
-}
 
 func main() {
 	js.Global().Set("inspectJwt", jwtWrapper())
@@ -20,8 +14,15 @@ func main() {
 
 func jwtWrapper() js.Func {
 	jwtFunc := js.FuncOf(func(this js.Value, args []js.Value) any {
+		var jsDoc = js.Global().Get("document")
+
+		if !jsDoc.Truthy() {
+			//panic will print the message in console.log useful for debugging/testing
+			panic("failed to get document object")
+		}
+
 		//get radiocheck value
-		radioCheckElement := getElementByQuerySelector("input[name=radiocheck]:checked")
+		radioCheckElement := getElementByQuerySelector(jsDoc, "input[name=radiocheck]:checked")
 		radioCheckValue := radioCheckElement.Get("value").String()
 
 		//set printEpoch bool value based on radiocheck value
@@ -36,18 +37,18 @@ func jwtWrapper() js.Func {
 		decoded, err := jwt.DecodeJwt(inputJwt, printEpoch)
 
 		//get decoded Header textarea
-		jwtOutputHeaderTextArea := getElementById("jwtoutputheader")
+		jwtOutputHeaderTextArea := getElementById(jsDoc, "jwtoutputheader")
 
 		//get decoded Payload textarea
-		jwtOutputPayloadTextArea := getElementById("jwtoutputpayload")
+		jwtOutputPayloadTextArea := getElementById(jsDoc, "jwtoutputpayload")
 
 		//get alert div element
-		jwtAlert := getElementById("jwtalert")
+		jwtAlert := getElementById(jsDoc, "jwtalert")
 
 		if err != nil {
 			//get alert p element and set error message in the element
-			jwtAlertMessage := getElementById("jwterrormessage")
-			jwtAlertMessage.Set("innerHTML", util.CapitalizeFirstChar(err.Error()))
+			jwtAlertMessage := getElementById(jsDoc, "jwterrormessage")
+			jwtAlertMessage.Set("innerHTML", text.CapitalizeFirstChar(err.Error()))
 
 			//show alert div element
 			jwtAlert.Get("style").Call("setProperty", "display", "block")
@@ -74,7 +75,7 @@ func jwtWrapper() js.Func {
 
 // getElementById gets the dom element by id
 // if there is no such element, exit immediately
-func getElementById(elementId string) js.Value {
+func getElementById(jsDoc js.Value, elementId string) js.Value {
 	var element = jsDoc.Call("getElementById", elementId)
 	if !element.Truthy() {
 		//panic will print the message in console.log useful for debugging/testing
@@ -85,7 +86,7 @@ func getElementById(elementId string) js.Value {
 
 // getElementByQuerySelector gets the dom element using querySelector
 // if there is no such element, exit immediately
-func getElementByQuerySelector(query string) js.Value {
+func getElementByQuerySelector(jsDoc js.Value, query string) js.Value {
 	var element = jsDoc.Call("querySelector", query)
 	if !element.Truthy() {
 		//panic will print the message in console.log useful for debugging/testing
