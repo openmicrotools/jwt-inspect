@@ -1,4 +1,4 @@
-name: Go
+name: check code coverage and verify build
 
 on: [push, pull_request]
 
