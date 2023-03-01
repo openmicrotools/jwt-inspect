@@ -1,6 +1,16 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- bootstrap start -->
+    <link
+      href="vendors/bootstrap-5.2.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="vendors/bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
+    <!-- bootstrap end -->
+    <!-- web assembly js code start -->
     <script src="go/wasm_exec.js"></script>
     <script>
       const go = new Go();
@@ -10,32 +20,149 @@
         }
       );
     </script>
+    <!-- web assembly js code end -->
   </head>
   <body>
-    <textarea
-      id="jwtinput"
-      name="jwtinput"
-      cols="80"
-      rows="20"
-      placeholder="Input JSON Web Token to decode"
-    ></textarea>
-    <input
-      id="button"
-      type="submit"
-      name="button"
-      value="Decode"
-      onclick="jwt(jwtinput.value)"
-    />
-    <textarea id="jwtoutput" name="jwtoutput" cols="80" rows="20"></textarea>
+    <main>
+      <header class="p-3 bg-dark text-white">
+        <div class="container ms-auto">
+          <div
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+          >
+            <a
+              href="/"
+              class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+            >
+              <span class="fs-2"> JWT Inspect</span>
+            </a>
+            <ul class="nav nav-pills ms-auto">
+              <li class="nav-item">
+                <a href="#" class="nav-link fs-5">About</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="container mt-4">
+        <div class="p-2 container-xxl text-center">
+          <div class="row">
+            <!-- Encoded section start -->
+            <div class="col me-2">
+              <div class="mb-5">
+                <span class="float-start h3" for="jwtinput"> Encoded </span>
+              </div>
+              <div class="form-group">
+                <textarea
+                  id="jwtinput"
+                  name="jwtinput"
+                  class="form-control rounded-0"
+                  placeholder="Please paste a token here"
+                  rows="20"
+                  oninput="inspectJwt(jwtinput.value)"
+                ></textarea>
+              </div>
+              <div
+                class="alert alert-danger rounded-0 mt-1"
+                role="alert"
+                id="jwtalert"
+                style="display: none"
+              >
+                <strong>Error!</strong>
+                <p id="jwterrormessage"></p>
+              </div>
+            </div>
+            <!-- Encoded section end -->
+
+            <!-- Decoded section start -->
+            <div class="col ms-2">
+              <div class="mb-5">
+                <span class="float-start h3" for="jwtout">Decoded</span>
+                <div
+                  class="form-check"
+                  style="float: right; position: relative"
+                >
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic radio toggle button group"
+                  >
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="radiocheck"
+                      autocomplete="off"
+                      value="0"
+                      id="btnradio1"
+                      checked
+                      onclick="inspectJwt(jwtinput.value)"
+                    />
+                    <label
+                      class="btn btn-outline-primary"
+                      for="btnradio1"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="left"
+                      data-bs-title="Human readable format of JWT date/times"
+                      >Date & Time</label
+                    >
+
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="radiocheck"
+                      id="btnradio2"
+                      value="1"
+                      autocomplete="off"
+                      onclick="inspectJwt(jwtinput.value)"
+                    />
+                    <label
+                      class="btn btn-outline-primary"
+                      for="btnradio2"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Original JWT value which is expressed in epoch format"
+                      >NumericDate
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-3 rounded-0">
+                <div class="card-header text-start">Header</div>
+                <textarea
+                  class="form-control border-0"
+                  id="jwtoutputheader"
+                  name="jwtoutputheader"
+                  rows="6"
+                  readonly
+                ></textarea>
+                <div class="card-header text-start border-top">Payload</div>
+                <textarea
+                  id="jwtoutputpayload"
+                  name="jwtoutputpayload"
+                  class="form-control border-0"
+                  rows="10"
+                  readonly
+                ></textarea>
+              </div>
+            </div>
+            <!-- Decoded section end -->
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <footer class="py-3 my-4">
+          <p class="text-center text-muted">© Open Microtools 2023</p>
+        </footer>
+      </div>
+    </main>
   </body>
   <script>
-    var jwt = function (input) {
-      var result = inspectJwt(input);
-      if (result != null && "error" in result) {
-        console.log("Go inspectJwt() return value", result);
-        jwtoutput.value = "";
-        alert(result.error);
-      }
-    };
+    //bootstrap 5.2 enable tooltips https://getbootstrap.com/docs/5.2/components/tooltips/
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    );
+    const tooltipList = [...tooltipTriggerList].map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
   </script>
 </html>

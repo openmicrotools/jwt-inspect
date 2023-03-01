@@ -14,8 +14,13 @@ type Jwt struct {
 	Payload *jsonData `json:"payload,omitempty"`
 }
 
-// ToString converts our Jwt type to a string or returns "" on MarshalIndent failure
-func (j Jwt) ToString() string {
+// Wrapper declares a type constraints for ToString func
+type Stringable interface {
+	Jwt | *jsonData
+}
+
+// ToString converts Jwt type and jsonData type to a string or returns "" on MarshalIndent failure
+func ToString[T Stringable](j T) string {
 	b, err := json.MarshalIndent(j, "", "  ")
 	if err != nil {
 		return ""
@@ -62,6 +67,11 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
 
 	var jwt Jwt
+
+	if s == "" {
+		return jwt, fmt.Errorf("supplied string is empty")
+	}
+
 	// header, payload, sig
 	hps := strings.Split(s, ".")
 	if len(hps) != 3 {

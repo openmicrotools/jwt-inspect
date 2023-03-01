@@ -12,5 +12,5 @@ func main() {
 	if err != nil {
 		fmt.Printf("An error was encountered:\n%s\n", err.Error())
 	}
-	fmt.Println(decodedJwt.ToString())
+	fmt.Println(jwt.ToString(decodedJwt))
 }

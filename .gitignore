@@ -1,6 +1,8 @@
 bin/**
 assets/*.wasm
 
+**/.DS_Store
+
 # go test coverage file
 *.out
 

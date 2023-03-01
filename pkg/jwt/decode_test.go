@@ -78,6 +78,13 @@ func TestDecodeJwt(t *testing.T) {
 			ExpectErr:    true,
 			ExpectErrVal: `supplied string is not in the format of a JWT`,
 		},
+		{
+			Name:         "When input is empty return empty result and error message",
+			InputVal:     "",
+			ExpectVal:    `{}`,
+			ExpectErr:    true,
+			ExpectErrVal: `supplied string is empty`,
+		},
 	}
 
 	for _, test := range testCases {
