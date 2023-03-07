@@ -14,6 +14,12 @@ The CLI will accept tokens provided as an argument or piped in from another comm
 
 JWT Inspect offers a webpage version of our cli tool. The JWT processing code is compiled to web assembly and served by a light weight golang container. By processing the JWT locally in the browser using Web Assembly we remove the risk that payload logging on the server's ingress leaks sensitive credentials and achieve very good performance on token decoding.
 
+![sequence diagram for our JWT Inspect Webpage](docs/assets/webpage_sequence.png)
+
+<!---
+
+github doesn't presently render mermaid correctly. This was rendered on mermaid.live, exported as svg, imported into GIMP, cropped and then exported as a png.
+
 ```mermaid
   sequenceDiagram
   box Teal Browser
@@ -30,6 +36,7 @@ JWT Inspect offers a webpage version of our cli tool. The JWT processing code is
   Web Assembly->>-User: Respond with decoded JWT  
   Note right of Web Assembly: Additional JWT may be processed locally<BR/>without contacting the server again
 ```
+--->
 
 Our container can be pulled from the github container registry.
 
