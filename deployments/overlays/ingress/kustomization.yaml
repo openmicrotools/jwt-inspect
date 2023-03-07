@@ -1,0 +1,17 @@
+resources:
+- ../../base
+# Uncomment to add custom css as a configmap
+# - ../../css 
+- ingress.yaml
+
+metadata:
+  annotations:
+    name: jwt-inspect
+  labels:
+    app: jwt-inspect
+namespace: open-microtools
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+

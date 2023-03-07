@@ -1,0 +1,22 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: jwtinspect
+  namespace: potato
+  annotations:
+    kubernetes.io/ingress.class: std-ingress-class 
+spec:
+  tls:
+    - hosts:
+        - <HOSTNAME>
+  rules:
+  - host: <HOSTNAME>
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jwtinspect
+              port: 
+                name: http
