@@ -5,7 +5,6 @@ metadata:
   name: jwt-inspect
   labels:
     app: jwt-inspect
-    version: v1
 spec:
   replicas: 1
   selector:
