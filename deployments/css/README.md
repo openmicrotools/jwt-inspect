@@ -2,7 +2,7 @@
 
 This application supports custom CSS to match any color theme.
 
-To add custom theming, in ```ingress/``` or ```nodeport/``` ```kustomization.yaml``` uncomment the resource ```- ../../css``` and uncomment the specific section of ```configMapGenerator``` used inside the Kustomization resource. Then, add changes to customize.css. Customize.css is loaded last in index.html so settings in it will supersede the existing styles.
+To add custom theming, in ```deployments/base/kustomization.yaml```  uncomment the specific section of ```configMapGenerator``` used inside the Kustomization resource. Then, add changes to customize.css. Customize.css is loaded last in index.html so settings in it will supersede the existing styles.
 
 ```mermaid
 flowchart
@@ -17,7 +17,3 @@ flowchart
     D --> | Mount Volume | C
   end
 ```
-
-# - name: index
-#   files:
-#   - assets/index.html

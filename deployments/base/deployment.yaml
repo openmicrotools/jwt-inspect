@@ -2,28 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-  name: jwtinspect
+  name: jwt-inspect
   labels:
-    app: jwtinspect
+    app: jwt-inspect
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jwtinspect
+      app: jwt-inspect
       version: v1
   template:
     metadata:
       labels:
-        app: jwtinspect
+        app: jwt-inspect
         version: v1
     spec:
       containers:
       - image: ghcr.io/openmicrotools/jwt-inspect:latest
         imagePullPolicy: IfNotPresent
-        name: jwtinspect
+        name: jwt-inspect
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
         resources:
           limits:

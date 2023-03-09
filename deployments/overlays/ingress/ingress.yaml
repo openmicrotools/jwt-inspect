@@ -1,8 +1,8 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: jwtinspect
-  namespace: potato
+  name: jwt-inspect
+  namespace: open-microtools
   annotations:
     kubernetes.io/ingress.class: std-ingress-class 
 spec:
@@ -17,6 +17,6 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: jwtinspect
+              name: jwt-inspect
               port: 
                 name: http

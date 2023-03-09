@@ -68,3 +68,6 @@ deploy-nodeport:
 deploy-ingress:
 	kustomize build deployments/overlays/ingress | kubectl apply -f -
 
+.PHONY: deploy-base
+deploy-base:
+	kustomize build deployments/base | kubectl apply -f -

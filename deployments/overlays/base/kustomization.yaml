@@ -1,6 +1,5 @@
 resources:
 - ../../base
-- ingress.yaml
 
 metadata:
   annotations:

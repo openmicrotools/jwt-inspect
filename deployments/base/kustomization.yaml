@@ -6,16 +6,6 @@ resources:
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-images:
-- name: ghcr.io/openmicrotools/jwt-inspect
-  newTag: latest
-
-metadata:
-  annotations:
-    name: jwt-inspect
-  labels:
-    app: jwt-inspect
-namespace: open-microtools
 
 ## Uncomment block to load files to the deployment via configmap
 ## Will also need to uncomment related files.
