@@ -42,6 +42,10 @@ func jwtWrapper() js.Func {
 		//get decoded Payload textarea
 		jwtOutputPayloadTextArea := getElementById(jsDoc, "jwtoutputpayload")
 
+		//get decoded hidden textarea
+		//hidden text area is used for copying whole decoded json both header and payload to clipboard
+		jwtOutputTextArea := getElementById(jsDoc, "jwtoutput")
+
 		//get alert div element
 		jwtAlert := getElementById(jsDoc, "jwtalert")
 
@@ -67,6 +71,11 @@ func jwtWrapper() js.Func {
 			jwtOutputPayloadTextArea.Set("value", jwt.ToString(decoded.Payload))
 		} else {
 			jwtOutputPayloadTextArea.Set("value", nil)
+		}
+
+		//set decoded json to hidden text area if it is not empty
+		if (decoded != jwt.Jwt{}) {
+			jwtOutputTextArea.Set("value", jwt.ToString(decoded))
 		}
 		return nil
 	})
