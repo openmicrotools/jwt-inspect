@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  name: jwt-inspect
+  labels:
+    app: jwt-inspect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jwt-inspect
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: jwt-inspect
+        version: v1
+    spec:
+      containers:
+      - image: ghcr.io/openmicrotools/jwt-inspect:latest
+        imagePullPolicy: IfNotPresent
+        name: jwt-inspect
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            memory: 16Mi
+            cpu: 20m
+          requests:
+            memory: 4Mi
+            cpu: 10m
+# # Uncomment when using either custom css or index.html
+#        volumeMounts:
+
+# # # Uncomment for custom css 
+# #      - name: customize-css
+# #        mountPath: /go/assets/customize.css # This should be your final destination
+# #        subPath: customize.css # The name of the file to be placed inside /etc, the filename used here and in mountPath should be same.
+
+# # # Uncomment for customized index.html
+# #      - name: index
+# #        mountPath: /go/assets/index.html # This should be your final destination
+# #        subPath: index.html # The name of the file to be placed inside /etc, the filename used here and in mountPath should be same.
+# # Uncomment when using either custom css or index.html
+#         volumes:
+
+# # # Uncomment for custom css 
+#         - name: customize-css
+#           configMap: 
+#             name: customize-css
+#             items:
+#               - key: customize.css  # Name of the item we had used inside our ConfigMap (under data:)
+#                 path: customize.css # Name of the file to be placed inside /etc
+
+# # # Uncomment for customized index.html
+#         - name: index
+#           configMap: 
+#             name: index
+#             items:
+#               - key: index.html  # Name of the item we had used inside our ConfigMap (under data:)
+#                 path: index.html # Name of the file to be placed inside /etc

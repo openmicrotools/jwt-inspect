@@ -58,3 +58,16 @@ run: wasm
 .PHONY: docker-build
 docker-build:
 	docker build -f ./docker/Dockerfile . --tag jwt-server:$(IMAGE_TAG)
+
+# Kustomize targets
+.PHONY: deploy-nodeport
+deploy-nodeport: 
+	kustomize build deployments/overlays/nodeport | kubectl apply -f -
+
+.PHONY: deploy-ingress
+deploy-ingress:
+	kustomize build deployments/overlays/ingress | kubectl apply -f -
+
+.PHONY: deploy-base
+deploy-base:
+	kustomize build deployments/base | kubectl apply -f -

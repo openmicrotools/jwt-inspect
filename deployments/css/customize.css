@@ -1,0 +1,13 @@
+/* Uncomment here, and Uncomment in ../base/kustomization
+../overlays/<ingress/nodeport>/kustomization.yaml to add custom, loadable, css*/
+/* Add custom style for header nav bar */
+/* .navbar {
+    background-color: #FF0099;
+} */
+
+/* Add custom style for button */
+/* 
+.btn {
+}  
+*/
+
