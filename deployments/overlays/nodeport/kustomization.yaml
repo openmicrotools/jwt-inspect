@@ -5,16 +5,11 @@ resources:
 # Uncomment to add custom css as a configmap
 # - ../../css 
 
+namespace: open-microtools
+
 images:
 - name: ghcr.io/openmicrotools/jwt-inspect
   newTag: latest
-
-metadata:
-  annotations:
-    name: jwt-inspect
-  labels:
-    app: jwt-inspect
-namespace: open-microtools
 
 patchesStrategicMerge:
   - service-patch.yaml
