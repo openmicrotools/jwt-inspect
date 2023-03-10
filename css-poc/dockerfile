@@ -1,0 +1,15 @@
+FROM golang:alpine3.17
+
+COPY main.go .
+
+RUN mkdir assets
+
+COPY /assets ./assets
+
+RUN go build main.go
+
+RUN chmod +x main.go
+
+EXPOSE 8080
+
+CMD ./main

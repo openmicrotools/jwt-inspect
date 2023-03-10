@@ -1,0 +1,29 @@
+/* root,
+[data-bs-theme=custom]{
+    --jwt-header-bg: #FF0099;
+} */
+
+/* .bg-body-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: #FF0099 !important;
+} */
+
+.navbar {
+    background-color: #FF0099; /* colors navbar background, as long as nothing else is specified
+    --bs-navbar-color: pink; /*colors link and dropdown*/
+    --bs-navbar-hover-color: red; /*colors navbar text hover*/
+    --bs-navbar-brand-color: teal; /*colors "navbar-brand" text*/
+    --bs-navbar-brand-hover-color: orange; /*colors "navbar-brand" text hover*/
+    --bs-navbar-active-color: brown; /*Colors basic text, like home in navbar*/
+
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0.5rem;
+    --bs-navbar-brand-font-size: 1.25rem;
+}
+
+.btn {
+    font-size: 25px;
+    color: purple;
+    background: yellow;
+
+}
