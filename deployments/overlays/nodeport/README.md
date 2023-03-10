@@ -1,5 +1,5 @@
 # Nodeport Kustomization
-This kustomize set will produce a manifest to apply to a Kuberenetes cluster without ingress traffic configured. It can be used to test any stage of deployment to that type of cluster, and will not produce a working endpoint. To access this, you must use it with a port-forward to either the service or pod. Then you can route to localhost:PORT to access the pod.
+This kustomize set will produce a manifest to apply to a Kuberenetes cluster without ingress traffic configured. It can be used to test any stage of deployment to that type of cluster, and will not produce a working endpoint. 
 
 Use this for local testing (KinD), or anywhere there is not ingress configured. 
 
@@ -15,7 +15,9 @@ nodes:
     hostPort: 30443
     listenAddress: "0.0.0.0"
     protocol: tcp
-    - role: worker
+- role: worker
 ```
 
 Access it via localhost:30443 (the node port it is served on)
+
+You can also use port-forward to access the pod or service if you do not want to set up KinD or other local k8s testing service with a specialized configuration.
