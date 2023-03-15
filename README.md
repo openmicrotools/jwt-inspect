@@ -10,6 +10,8 @@ JWT Inspect is available as a CLI binary. This can be easily compiled from sourc
 
 The CLI will accept tokens provided as an argument or piped in from another command. It has one operative flag, `-e`, which disables processing of NumericDate fields into a more human readable format and instead prints them in their original "epoch" format. This option may be useful if a user desires to pipe the output of jwt-inspect into another program which expects NumericDate fields in their original format.
 
+![cli](https://user-images.githubusercontent.com/4520812/225171620-3500a322-94cf-47ba-9345-c95d1a8c827a.gif)
+
 ## JWT Inspect Webpage
 
 JWT Inspect offers a webpage version of our cli tool. The JWT processing code is compiled to web assembly and served by a light weight golang container. By processing the JWT locally in the browser using Web Assembly we remove the risk that payload logging on the server's ingress leaks sensitive credentials and achieve very good performance on token decoding.
