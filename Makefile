@@ -70,4 +70,9 @@ deploy-ingress:
 
 .PHONY: deploy-base
 deploy-base:
-	kustomize build deployments/base | kubectl apply -f -
+	kustomize build deployments/base | kubectl apply -n open-microtools -f -
+
+# Local testing functions
+.PHONY: port-forward
+port-forward:
+	./hack/port-forward-to-poc.sh

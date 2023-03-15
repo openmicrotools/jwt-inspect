@@ -10,6 +10,13 @@
     />
     <script src="vendors/bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
     <!-- bootstrap end -->
+    <!-- custom css start -->
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="css/customize.css"
+    />
+    <!-- custom css end -->
     <!-- web assembly js code start -->
     <script src="go/wasm_exec.js"></script>
     <script>
@@ -24,20 +31,20 @@
   </head>
   <body>
     <main>
-      <header class="p-3 bg-dark text-white">
+      <header class="p-3 bg-dark text-white" id="header-bg">
         <div class="container ms-auto">
           <div
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
           >
             <a
               href="/"
-              class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+              class="d-flex align-items-center mb-2 mb-lg-0 text-home text-decoration-none"
             >
-              <span class="fs-2"> JWT Inspect</span>
+              <span class="fs-2" id="headertext"> JWT Inspect</span>
             </a>
             <ul class="nav nav-pills ms-auto">
               <li class="nav-item">
-                <a href="#" class="nav-link fs-5">About</a>
+                <a href="#" id="headersubtext" class="nav-link fs-5 text-about">About</a>
               </li>
             </ul>
           </div>

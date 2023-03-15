@@ -1,0 +1,35 @@
+:root {
+    --brand-main: #292929;
+    --brand-accent: #292929;
+    --brand-header-home: #FFF;
+    --brand-header-about: #FFF;
+}
+
+/* ---------- Header Settings --------- */
+a:hover {
+    color: var(--brand-header-home) !important;
+}
+
+#header-bg{
+    background-color: var(--brand-main) !important;
+}
+
+#headertext {
+    color: var(--brand-header-home);
+}
+
+#headersubtext {
+    color: var(--brand-header-about);
+}
+
+/* ---------- Add custom style for button ---------- */
+
+.btn-check:checked + .btn {
+    background-color:  var(--brand-main);
+    border-color: var(--brand-main);
+}
+
+.btn-outline-primary {
+    --bs-btn-border-color: var(--brand-main);
+    --bs-btn-color: var(--brand-main);
+} 
