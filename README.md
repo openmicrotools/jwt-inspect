@@ -18,6 +18,10 @@ JWT Inspect offers a webpage version of our cli tool. The JWT processing code is
 
 ![sequence diagram for our JWT Inspect Webpage](docs/assets/webpage_sequence.png)
 
+Web UI preview
+
+![UI](docs/assets/web_ui.png)
+
 <!---
 
 github doesn't presently render mermaid correctly. This was rendered on mermaid.live, exported as svg, imported into GIMP, cropped and then exported as a png.
@@ -29,16 +33,18 @@ github doesn't presently render mermaid correctly. This was rendered on mermaid.
   Actor User
   end
   box Navy Network
-  participant Server 
+  participant Server
   end
   User->>+Server: Request jwt-inspect page
   Server->>-User: Serve jwt-inspect page, web assembly and assets
   User->>+Web Assembly: Request JWT decode
   Note left of Web Assembly: All JWT are handled locally
-  Web Assembly->>-User: Respond with decoded JWT  
+  Web Assembly->>-User: Respond with decoded JWT
   Note right of Web Assembly: Additional JWT may be processed locally<BR/>without contacting the server again
 ```
 --->
+
+### Docker image
 
 Our container can be pulled from the github container registry.
 
