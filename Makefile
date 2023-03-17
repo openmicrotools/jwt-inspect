@@ -1,4 +1,5 @@
 IMAGE_TAG ?= alpha
+NAMESPACE ?= open-microtools
 
 # Run a real basic sample based on an example token from jwt.io
 .PHONY: sample
@@ -70,4 +71,9 @@ deploy-ingress:
 
 .PHONY: deploy-base
 deploy-base:
-	kustomize build deployments/base | kubectl apply -f -
+	kustomize build deployments/base | kubectl apply -n $(NAMESPACE) -f -
+
+# Local testing functions
+.PHONY: port-forward
+port-forward:
+	./hack/port-forward-to-poc.sh

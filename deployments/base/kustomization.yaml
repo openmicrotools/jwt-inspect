@@ -2,19 +2,14 @@ resources:
   - deployment.yaml
   - service.yaml
   - namespace.yaml
-  - ../css
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-## Uncomment block to load files to the deployment via configmap
-## Will also need to uncomment related files.
+# # Uncomment block to load css to the deployment via configmap
 # configMapGenerator:
+#   - name: customize-css
+#     files:
+#     - customize.css
 # generatorOptions:
-#  disableNameSuffixHash: true
-
-## Uncomment for custom styles for pages
-# - name: customize-css
-#   files:
-#   - assets/customize.css
-## Add configmap here for a content customized index.html page
+#     disableNameSuffixHash: true

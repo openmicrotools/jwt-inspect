@@ -1,0 +1,36 @@
+
+:root {
+    /*
+    --brand-main: Color of Top Bar
+    --brand-accent: Color of Radio Button;
+    --brand-header: Color of JWT-Inspect;
+ */
+    --brand-main: #292929;
+    --brand-accent: #292929;
+    --brand-header: #FFF;
+}
+
+/* ---------- Header Settings --------- */
+a:hover {
+    color: var(--brand-header) !important;
+}
+
+#header-bg{
+    background-color: var(--brand-main) !important;
+}
+
+#headertext {
+    color: var(--brand-header);
+}
+
+/* ---------- Add custom style for button ---------- */
+
+.btn-check:checked + .btn {
+    background-color:  var(--brand-accent);
+    border-color: var(--brand-accent);
+}
+
+.btn-outline-primary {
+    --bs-btn-border-color: var(--brand-accent);
+    --bs-btn-color: var(--brand-accent);
+} 
