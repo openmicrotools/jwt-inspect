@@ -42,7 +42,7 @@ github doesn't presently render mermaid correctly. This was rendered on mermaid.
 
 Web UI preview
 
-![UI](../docs/../jwt-inspect/docs/assets/web_ui.png)
+![UI](docs/assets/web_ui.png)
 
 ### Docker image
 
