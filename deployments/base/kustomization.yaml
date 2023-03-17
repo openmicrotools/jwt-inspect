@@ -6,13 +6,10 @@ resources:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Comment out block to not load css to the deployment via configmap
-
-configMapGenerator:
-
-
-  - name: customize-css
-    files:
-    - customize.css
-generatorOptions:
-    disableNameSuffixHash: true
+# # Uncomment block to load css to the deployment via configmap
+# configMapGenerator:
+#   - name: customize-css
+#     files:
+#     - customize.css
+# generatorOptions:
+#     disableNameSuffixHash: true

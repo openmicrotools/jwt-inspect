@@ -32,17 +32,15 @@ spec:
             memory: 4Mi
             cpu: 10m
 
-
-# Comment out to remove custom css 
-        volumeMounts:
-        - name: customize-css
-          mountPath: assets/css/customize.css # This should be your final destination
-          subPath: assets/css/customize.css # The name of the file to be placed inside /etc, the filename used here and in mountPath should be same.
-      volumes:
-        - name: customize-css
-          configMap: 
-            name: customize-css
-            items:
-              - key: customize.css  # Name of the item we had used inside our ConfigMap (under data:)
-                path: assets/css/customize.css # Name of the file to be placed inside /etc
-
+# # Uncomment block to add custom css 
+#         volumeMounts:
+#         - name: customize-css
+#           mountPath: assets/css/customize.css
+#           subPath: assets/css/customize.css 
+#       volumes:
+#         - name: customize-css
+#           configMap: 
+#             name: customize-css
+#             items:
+#               - key: customize.css  
+#                 path: assets/css/customize.css 

@@ -3,18 +3,16 @@
     /*
     --brand-main: Color of Top Bar
     --brand-accent: Color of Radio Button;
-    --brand-header-home: Color of JWT-Inspect;
-    --brand-header-about: Color of Contact Us; */
-    
-    --brand-main: #9900FF;
-    --brand-accent: #00FF99;
-    --brand-header-home: #FFF;
-    --brand-header-about: #FFF;
+    --brand-header: Color of JWT-Inspect;
+ */
+    --brand-main: #292929;
+    --brand-accent: #292929;
+    --brand-header: #FFF;
 }
 
 /* ---------- Header Settings --------- */
 a:hover {
-    color: var(--brand-header-home) !important;
+    color: var(--brand-header) !important;
 }
 
 #header-bg{
@@ -22,11 +20,7 @@ a:hover {
 }
 
 #headertext {
-    color: var(--brand-header-home);
-}
-
-#headersubtext {
-    color: var(--brand-header-about);
+    color: var(--brand-header);
 }
 
 /* ---------- Add custom style for button ---------- */
