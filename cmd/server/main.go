@@ -24,11 +24,10 @@ func createChannel() (chan os.Signal, func()) {
 // Begins http server functionality
 func start(server *http.Server) {
 	log.Println("Server Started")
-	if err := http.ListenAndServe(":8080", http.FileServer(http.Dir("./assets"))); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		log.Println("Failed to start server", err)
-		return
+	if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		log.Fatalf("Failed to start server " + err.Error())
 	} else {
-		log.Println("Server exited gracefully")
+		log.Println("Server exiting...")
 	}
 }
 
@@ -46,8 +45,12 @@ func shutdown(ctx context.Context, server *http.Server) {
 // uses go routine to start server.
 // If an interrupt signal is received, the shutdown process begins
 func main() {
-	serve := &http.Server{}
-	go start(serve)
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: http.FileServer(http.Dir("./assets")),
+	}
+
+	go start(server)
 
 	// Opens channel, and waits to close it until main is returning.
 	stopCh, closeCh := createChannel()
@@ -55,7 +58,7 @@ func main() {
 	log.Println("Notified:", <-stopCh)
 
 	// shut down server
-	shutdown(context.Background(), serve)
+	shutdown(context.Background(), server)
 
 	// clean up channels from deferred func
 }
