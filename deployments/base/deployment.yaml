@@ -31,6 +31,18 @@ spec:
           requests:
             memory: 4Mi
             cpu: 10m
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 1
+          periodSeconds: 3
 
 # # Uncomment block to add custom css 
 #         volumeMounts:
