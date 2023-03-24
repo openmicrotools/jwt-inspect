@@ -36,13 +36,13 @@ spec:
             path: /
             port: 8080
           initialDelaySeconds: 5
-          periodSeconds: 3
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 1
-          periodSeconds: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
 
 # # Uncomment block to add custom css 
 #         volumeMounts:
