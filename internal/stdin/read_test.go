@@ -133,7 +133,7 @@ func TestRead(t *testing.T) { // simple test to make sure read is actually using
 	defer func() { os.Stdin = save }()
 	os.Stdin = r // temporarily mangle stdin with our own pipe for testing
 
-	actual := read()
+	actual := Read()
 
 	if actual != testVal {
 		t.Logf("read value doesn't appear to be from os.Stdin!")
