@@ -1,9 +1,7 @@
-package jwt_test
+package jwt
 
 import (
 	"testing"
-
-	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 
 const testJwt = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`
@@ -82,7 +80,7 @@ func TestFindAndRemoveJwt(t *testing.T) {
 	for _, test := range testcases {
 
 		t.Run(test.Name, func(t *testing.T) {
-			gotSlice, gotMatch, gotErr := jwt.FindAndRemoveJwt(test.Input)
+			gotSlice, gotMatch, gotErr := FindAndRemoveJwt(test.Input)
 			if test.ExpectErr {
 
 				if gotErr == nil {

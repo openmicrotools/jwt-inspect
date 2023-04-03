@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/openmicrotools/jwt-inspect/internal/stdin"
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
-	"github.com/openmicrotools/jwt-inspect/pkg/stdin"
 )
 
 // define some error code constants
