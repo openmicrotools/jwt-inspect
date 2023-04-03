@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	_ "time/tzdata"
 )
 
 // Jwt is a struct that holds our simplified type and contains json tags so it can be marshalled to JSON
@@ -31,7 +33,7 @@ func ToString[T Stringable](j T) string {
 type jsonData map[string]interface{}
 
 // Handle decoding a base64url encoded section of a JWT
-func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
+func decodeJwtSection(s string, printEpoch bool, location string) (*jsonData, error) {
 
 	section := make(jsonData)
 
@@ -51,10 +53,24 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 
 			// TODO: this only works at the top level, technically a JWT could contain a nested JWT so consider handling that
 			numericDate, ok := v.(float64)
+			fmt.Println(time.Now().Local())
 			if ok { // NumericDate is the format for timestamps, golang reads it as a float64 so we can detect timestamps and format them better
-				(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
+				// if there is location to passed in, try to get the associate timezone
+				if location != "" {
+					// timezone, err := time.LoadLocation("America/Los_Angeles")
+					timezone, err := time.LoadLocation(location)
+					if err != nil {
+						fmt.Println("unable to load location to get timezone, ", err.Error())
+						//if not able to get timezone, not passing In timezone
+						(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
+					} else {
+						(section)[k] = time.Unix(int64(numericDate), 0).In(timezone).Format(time.RFC1123)
+					}
+				} else {
+					//if no location passing in, using 
+					(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
+				}
 			}
-
 		}
 	}
 
@@ -64,7 +80,7 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 
 // DecodeJwt accepts a string and returns our Jwt type and and error.
 // This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT string is malformed.
-func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
+func DecodeJwt(s string, printEpoch bool, location string) (Jwt, error) {
 
 	var jwt Jwt
 
@@ -83,7 +99,7 @@ func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
 
 	for i, elem := range hps[:2] { // just ignore the sig for now
 
-		unmarshalledData, err := decodeJwtSection(elem, printEpoch)
+		unmarshalledData, err := decodeJwtSection(elem, printEpoch, location)
 
 		switch i {
 		case 0:

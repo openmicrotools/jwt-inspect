@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	decodedJwt, err := jwt.DecodeJwt(cmdinput.HandleInput())
+	inputJwt, isPrintEpoch := cmdinput.HandleInput()
+	decodedJwt, err := jwt.DecodeJwt(inputJwt, isPrintEpoch, "")
 	if err != nil {
 		fmt.Printf("An error was encountered:\n%s\n", err.Error())
 	}
