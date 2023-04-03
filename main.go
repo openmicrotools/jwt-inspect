@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/openmicrotools/jwt-inspect/internal/cmdinput"
+	"github.com/openmicrotools/jwt-inspect/pkg/cmdinput"
 	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 

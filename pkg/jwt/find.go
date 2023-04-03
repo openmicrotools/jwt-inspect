@@ -1,4 +1,4 @@
-package cmdinput
+package jwt
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ const jwtRegExp = `^([a-zA-Z0-9\-_\/\+]+\.){2}([a-zA-Z0-9\-_\/\+]+)$` // This ma
 // If only a single JWT is found the match as well as a slice without the JWT is returnd.
 // If multiple JWT are found then the correct behavior is undetermined so we return an error.
 // If no jwt-like string can be found an error is returned
-func findAndRemoveJwt(strings []string) ([]string, string, error) {
+func FindAndRemoveJwt(strings []string) ([]string, string, error) {
 	r := regexp.MustCompile(jwtRegExp) // compile our raw string regexp
 
 	// setup variables with scope outside the loop

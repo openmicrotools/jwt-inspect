@@ -1,4 +1,4 @@
-package cmdinput
+package jwt
 
 import (
 	"testing"
@@ -80,7 +80,7 @@ func TestFindAndRemoveJwt(t *testing.T) {
 	for _, test := range testcases {
 
 		t.Run(test.Name, func(t *testing.T) {
-			gotSlice, gotMatch, gotErr := findAndRemoveJwt(test.Input)
+			gotSlice, gotMatch, gotErr := FindAndRemoveJwt(test.Input)
 			if test.ExpectErr {
 
 				if gotErr == nil {

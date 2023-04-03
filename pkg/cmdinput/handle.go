@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/openmicrotools/jwt-inspect/internal/stdin"
+	"github.com/openmicrotools/jwt-inspect/pkg/jwt"
 )
 
 // define some error code constants
@@ -40,7 +41,7 @@ func handleInput(args []string) (string, bool) {
 
 	var inputErr error  // capture and store the inputErr value for later use within the outer scope
 	if jwtInput == "" { // if we didn't get anything on stdin let's look for an argument with a JWT
-		args, jwtInput, inputErr = findAndRemoveJwt(args) // try to peel off a JWT from our list of args to make flag parsing more smooth; without this flag parsing will get tripped up on the first non-flag argument and quit instead of parsing flags which may come after the jwt
+		args, jwtInput, inputErr = jwt.FindAndRemoveJwt(args) // try to peel off a JWT from our list of args to make flag parsing more smooth; without this flag parsing will get tripped up on the first non-flag argument and quit instead of parsing flags which may come after the jwt
 	}
 
 	err := defaultCmd.Parse(args) // parse cli flags
