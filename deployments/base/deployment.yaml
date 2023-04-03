@@ -6,7 +6,7 @@ metadata:
   labels:
     app: jwt-inspect
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: jwt-inspect
@@ -31,6 +31,18 @@ spec:
           requests:
             memory: 4Mi
             cpu: 10m
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
 
 # # Uncomment block to add custom css 
 #         volumeMounts:

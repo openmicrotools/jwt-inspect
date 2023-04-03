@@ -8,6 +8,8 @@ import (
 	"time"
 
 	_ "time/tzdata"
+
+	internalError "github.com/openmicrotools/jwt-inspect/internal/error"
 )
 
 // Jwt is a struct that holds our simplified type and contains json tags so it can be marshalled to JSON
@@ -104,10 +106,10 @@ func DecodeJwt(s string, printEpoch bool, location string) (Jwt, error) {
 		switch i {
 		case 0:
 			jwt.Header = unmarshalledData
-			returnErr = appendError(returnErr, prefixError(err, "header"))
+			returnErr = internalError.AppendError(returnErr, internalError.PrefixError(err, "header"))
 		case 1:
 			jwt.Payload = unmarshalledData
-			returnErr = appendError(returnErr, prefixError(err, "payload"))
+			returnErr = internalError.AppendError(returnErr, internalError.PrefixError(err, "payload"))
 		default:
 			//do nothing
 		}
