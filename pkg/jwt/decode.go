@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	_ "time/tzdata"
+
 	internalError "github.com/openmicrotools/jwt-inspect/internal/error"
 )
 
@@ -33,7 +35,7 @@ func ToString[T Stringable](j T) string {
 type jsonData map[string]interface{}
 
 // Handle decoding a base64url encoded section of a JWT
-func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
+func decodeJwtSection(s string, printEpoch bool, location string) (*jsonData, error) {
 
 	section := make(jsonData)
 
@@ -53,10 +55,20 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 
 			// TODO: this only works at the top level, technically a JWT could contain a nested JWT so consider handling that
 			numericDate, ok := v.(float64)
-			if ok { // NumericDate is the format for timestamps, golang reads it as a float64 so we can detect timestamps and format them better
-				(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
-			}
 
+			if ok { // NumericDate is the format for timestamps, golang reads it as a float64 so we can detect timestamps and format them better
+
+				// if there is location passed in, try to get the associate location Name from IANA Time Zone database
+				loc, err := time.LoadLocation(location)
+
+				if err != nil {
+					fmt.Println("unable to load location to get timezone, ", err.Error())
+					//if not able to get location, not passing In() function to get local time
+					(section)[k] = time.Unix(int64(numericDate), 0).Format(time.RFC1123)
+				} else {
+					(section)[k] = time.Unix(int64(numericDate), 0).In(loc).Format(time.RFC1123)
+				}
+			}
 		}
 	}
 
@@ -66,7 +78,7 @@ func decodeJwtSection(s string, printEpoch bool) (*jsonData, error) {
 
 // DecodeJwt accepts a string and returns our Jwt type and and error.
 // This function is slightly atypical in that it may return partial Jwt data in addition to an error. This is to allow partial successes if only 1 portion of the JWT string is malformed.
-func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
+func DecodeJwt(s string, printEpoch bool, location string) (Jwt, error) {
 
 	var jwt Jwt
 
@@ -85,7 +97,7 @@ func DecodeJwt(s string, printEpoch bool) (Jwt, error) {
 
 	for i, elem := range hps[:2] { // just ignore the sig for now
 
-		unmarshalledData, err := decodeJwtSection(elem, printEpoch)
+		unmarshalledData, err := decodeJwtSection(elem, printEpoch, location)
 
 		switch i {
 		case 0:

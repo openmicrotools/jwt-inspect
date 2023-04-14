@@ -33,8 +33,14 @@ func jwtWrapper() js.Func {
 			printEpoch = true
 		}
 
+		var timezone = ""
+		//get browser timezone using JS Internationalization API(Intl.DateTimeFormat().resolvedOptions().timeZone)
+		if intl := js.Global().Get("Intl"); !intl.IsUndefined() {
+			timezone = js.Global().Get("Intl").Call("DateTimeFormat").Call("resolvedOptions").Get("timeZone").String()
+		}
+
 		inputJwt := args[0].String()
-		decoded, err := jwt.DecodeJwt(inputJwt, printEpoch)
+		decoded, err := jwt.DecodeJwt(inputJwt, printEpoch, timezone)
 
 		//get decoded Header textarea
 		jwtOutputHeaderTextArea := getElementById(jsDoc, "jwtoutputheader")
